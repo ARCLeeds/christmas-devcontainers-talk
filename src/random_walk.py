@@ -3,19 +3,28 @@ import matplotlib.pyplot as plt
 
 def main():
 
-    start = 0
+    santa_warehouse = np.zeros([100,100])
+
+    santa = (np.random.randint(100), np.random.randint(100))
+
+    start = np.asarray([0,0])
     x = []
     n = 10_000
 
     for i in range(n):
-        step = np.random.choice([-1,1], p=[0.5,0.5])
+        step = np.asarray([random_step(), random_step()])
         start = start + step 
+        while any(start < 0 ) or any(start > 100):
+            step = np.asarray([random_step(), random_step()])
+            start = start + step 
         x.append(start)
 
     plot_walk(x)
 
     return 0
 
+def random_step(prob=0.5):
+    return np.random.choice([-1,1], p=[prob,prob])
 
 def plot_walk(data: list):
 
