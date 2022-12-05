@@ -41,7 +41,7 @@ def main():
         test_step = start + step
         if any(test_step < 0):
             step[test_step < 0] = random_step(1.0)
-        start = start + step
+            start = start + step
         elif any(test_step > limits[0]):
             step[test_step > limits[0]] = random_step(0)
             start = start + step
@@ -59,6 +59,9 @@ def main():
 
     if rank == 0:
         plot_walk(data, santa)
+        for idx, item in enumerate(data):
+            item = np.vstack(item)
+            np.savetxt(f"figures/data_{idx}.txt", item, fmt="%1f")
 
     return 0
 
