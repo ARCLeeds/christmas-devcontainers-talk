@@ -1,8 +1,11 @@
 name: devcontainers
 channels:
-- conda-forge
-- defaults
+  - conda-forge
 dependencies:
-- python=3.11
-- numpy
-- matplotlib 
+  - python=3.11
+  - numpy
+  - matplotlib
+  - mpi4py
+  - ca-certificates
+  - certifi
+  - openssl
