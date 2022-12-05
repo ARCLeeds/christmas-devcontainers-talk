@@ -47,6 +47,10 @@ def main():
             start
         x.append(start)
 
+        if all(start == santa):
+            print("Rank ", rank, " found santa!")
+            break
+
     x = list(x)
 
     data = comm.gather(x, root=0)
