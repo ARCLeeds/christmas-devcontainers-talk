@@ -2,6 +2,11 @@ FROM condaforge/mambaforge
 
 COPY ./ /app/
 
+WORKDIR /app/
+
 RUN mamba env create -f /app/environment.yml
 
-ENTRYPOINT ["conda run -n devcontainers","mpiexec","-np","4","python","/app/src/random_walk.py"]
+RUN chmod +x /app/entrypoint.sh
+
+CMD ["/app/entrypoint.sh","mpiexec","-np","4","python","/app/src/random_walk.py"]
+ENTRYPOINT [ "/app/entrypoint.sh" ]
