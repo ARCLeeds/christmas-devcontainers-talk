@@ -38,13 +38,15 @@ def main():
     print("Running markov chain on rank: ", rank)
     for i in range(n):
         step = np.asarray([random_step(), random_step()])
+        test_step = start + step
+        if any(test_step < 0):
+            step[test_step < 0] = random_step(1.0)
         start = start + step
-        if any(start < 0):
-            start[start < 0] = random_step(1.0)
-        elif any(start > limits[0]):
-            start[start > limits[0]] = random_step(0)
+        elif any(test_step > limits[0]):
+            step[test_step > limits[0]] = random_step(0)
+            start = start + step
         else:
-            start
+            start = start + step
         x.append(start)
 
         if all(start == santa):
