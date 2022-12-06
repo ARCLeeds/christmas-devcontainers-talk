@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from mpi4py import MPI
 import matplotlib.pyplot as plt
 from matplotlib.offsetbox import OffsetImage, AnnotationBbox
+import os
 
 
 def main():
@@ -73,6 +74,8 @@ def main():
 
     if rank == 0:
         plot_walk(data, santa, limits)
+
+        if os.getenv("DEBUG"):
         for idx, item in enumerate(data):
             item = np.vstack(item)
             np.savetxt(f"figures/data_{idx}.txt", item, fmt="%1f")
