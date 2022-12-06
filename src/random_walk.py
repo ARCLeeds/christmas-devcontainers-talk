@@ -61,7 +61,7 @@ def main():
             if all(start == santa):
                 santa_status = True
                 found_rank = rank
-                print("Rank ", found_rank, " found santa!")
+                print("Rank ", found_rank, " found Santa 🎅 in ", len(x), "steps!")
             else:
                 santa_status = False
                 found_rank = 0
@@ -76,9 +76,9 @@ def main():
         plot_walk(data, santa, limits)
 
         if os.getenv("DEBUG"):
-        for idx, item in enumerate(data):
-            item = np.vstack(item)
-            np.savetxt(f"figures/data_{idx}.txt", item, fmt="%1f")
+            for idx, item in enumerate(data):
+                item = np.vstack(item)
+                np.savetxt(f"figures/data_{idx}.txt", item, fmt="%1f")
 
     return 0
 
