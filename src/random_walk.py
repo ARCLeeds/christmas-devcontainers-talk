@@ -13,11 +13,11 @@ def main():
     rank = comm.Get_rank()
 
     x = []
-    n = 100_000
+    n = 900_000
 
     if rank == 0:
 
-        limits = [500, 500]
+        limits = [1000, 1000]
 
         santa_warehouse = np.zeros(limits)
 
@@ -66,7 +66,7 @@ def main():
                 santa_status = False
                 found_rank = 0
 
-            santa_found = comm.bcast(santa_status, root=found_rank)
+        santa_found = comm.bcast(santa_status, root=found_rank)
 
     x = list(x)
 
