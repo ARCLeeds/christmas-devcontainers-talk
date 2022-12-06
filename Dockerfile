@@ -1,6 +1,12 @@
 FROM condaforge/mambaforge
 
-COPY ./ /app/
+RUN apt update -y && apt install -y openssh-client
+
+RUN useradd -m conda 
+
+USER conda
+
+COPY --chown=conda ./ /app/
 
 WORKDIR /app/
 
