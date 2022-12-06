@@ -1,6 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from mpi4py import MPI
+import matplotlib.pyplot as plt
+from matplotlib.offsetbox import OffsetImage, AnnotationBbox
 
 
 def main():
@@ -10,11 +12,11 @@ def main():
     rank = comm.Get_rank()
 
     x = []
-    n = 10_000
+    n = 100_000
 
     if rank == 0:
 
-        limits = [100, 100]
+        limits = [500, 500]
 
         santa_warehouse = np.zeros(limits)
 
@@ -29,7 +31,7 @@ def main():
             (np.empty(1, dtype="i"), np.empty(1, dtype="i")),
         )
         start = np.empty([1, 1], dtype="i")
-    
+
     santa_found = None
 
     limits = comm.bcast(limits, root=0)
@@ -42,7 +44,7 @@ def main():
         if santa_found == True:
             print("Santa found breaking rank: ", rank)
             break
-        else: 
+        else:
             step = np.asarray([random_step(), random_step()])
             test_step = start + step
             if any(test_step < 0):
@@ -70,7 +72,7 @@ def main():
     data = comm.gather(x, root=0)
 
     if rank == 0:
-        plot_walk(data, santa)
+        plot_walk(data, santa, limits)
         for idx, item in enumerate(data):
             item = np.vstack(item)
             np.savetxt(f"figures/data_{idx}.txt", item, fmt="%1f")
@@ -82,17 +84,27 @@ def random_step(prob=0.5):
     return np.random.choice([-1, 1], p=[1 - prob, prob])
 
 
-def plot_walk(data: list, santa: tuple):
+def plot_walk(data: list, santa: tuple, limits):
 
+    fig, ax = plt.subplots()
     for item in data:
         item = np.vstack(item)
-        plt.plot(item[:, 0], item[:, 1])
-    plt.plot(santa[0], santa[1], marker="x", color="red")
-    plt.xlabel("lon", fontsize=20)
-    plt.ylabel("lat", fontsize=20)
-    plt.title("Santa's elves walks")
+        ax.plot(item[:, 0], item[:, 1])
+    ab = AnnotationBbox(
+        getImage("static/santa-claus.png"), (santa[0], santa[1]), frameon=False
+    )
+    ax.add_artist(ab)
+    ax.set_ylim(0, limits[0])
+    ax.set_xlim(0, limits[0])
+    ax.set_xlabel("lon", fontsize=20)
+    ax.set_ylabel("lat", fontsize=20)
+    ax.set_title("Santa's elves walks")
 
     plt.savefig("figures/random_walks.png", dpi=300)
+
+
+def getImage(path):
+    return OffsetImage(plt.imread(path, format="png"), zoom=0.05)
 
 
 if __name__ == "__main__":
