@@ -108,7 +108,3 @@ def plot_walk(data: list, santa: tuple, limits):
 
 def getImage(path):
     return OffsetImage(plt.imread(path, format="png"), zoom=0.05)
-
-
-if __name__ == "__main__":
-    main()
